@@ -13,7 +13,7 @@ export default function Home(props) {
           name="description"
           content="Find a lot of great events that allow you to evolve..."
         />
-        {/* meta태그는 해당문서의 대한 정보인 메타 데이터를 정의할 떄 사용  */}
+        {/* meta태그는 해당문서의 대한 정보인 메타 데이터를 정의할 떄 사용  검색엔진에서 결과 출력할 때 같이 출력되는 설명문 */}
       </Head>
       <EventList items={props.events} />
     </div>

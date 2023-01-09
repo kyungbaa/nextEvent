@@ -4,12 +4,12 @@ export default function MainHeader(props) {
   return (
     <haeader className={styles.header}>
       <div className={styles.logo}>
-        <Link href="/">Next Events</Link>
+        <Link href="/">NextEvents</Link>
       </div>
       <nav className={styles.navigation}>
         <ul>
           <li>
-            <Link href="/events"></Link>
+            <Link href="/events">Browse All Events</Link>
           </li>
         </ul>
       </nav>

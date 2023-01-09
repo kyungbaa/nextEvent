@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { getFilteredEvents } from '../../helpers/api-util';
 import useSWR from 'swr';
 
@@ -19,6 +20,7 @@ import ErrorAlert from '../../components/ui/error-alert';
 // 갑자기 csr데이터 페칭으로 바꾼 이유 1. 이벤트 목록 필터 페이지가 이벤트 리스트 페이지나 이벤트 디테일 페이지보다 전혀 중요하지 않음 2.seo도 필요없음
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
+
 export default function FilterdEventPage(props) {
   const [loadedEvents, setLoadedEvents] = useState();
   const router = useRouter();
@@ -44,8 +46,20 @@ export default function FilterdEventPage(props) {
     }
   }, [data]);
 
+  let pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="description" content={`A list of filtered events`} />
+    </Head>
+  );
+
   if (!loadedEvents) {
-    return <p className="center">Loading.........</p>;
+    return (
+      <>
+        {pageHeadData}
+        <p className="center">Loading.........</p>
+      </>
+    );
   }
 
   const filteredYear = filterData[0];
@@ -53,6 +67,16 @@ export default function FilterdEventPage(props) {
 
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
+
+  pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${numMonth}/${numYear}.`}
+      />
+    </Head>
+  );
 
   if (
     isNaN(numYear) ||
@@ -65,6 +89,14 @@ export default function FilterdEventPage(props) {
   ) {
     return (
       <ErrorAlert>
+        <Head>
+          <title>Filtered Events</title>
+          <meta
+            name="description"
+            content={`All events for ${numMonth}/${numYear}.`}
+          />
+          {/* meta태그는 해당문서의 대한 정보인 메타 데이터를 정의할 떄 사용  검색엔진에서 결과 출력할 때 같이 출력되는 설명문 */}
+        </Head>
         <div className="flex flex-col items-center justify-center">
           <p className="mt-3 mb-4 font-bold text-center">
             Invalid filter. Please Check Your Values!
@@ -85,14 +117,17 @@ export default function FilterdEventPage(props) {
 
   if (!filterdEvents || filterdEvents.length === 0) {
     return (
-      <ErrorAlert>
-        <div className="flex flex-col items-center justify-center">
-          <p className="mt-3 mb-4 font-bold text-center">
-            No event found for the chosen filter!
-          </p>
-          <Button link="/events">Show All Events!</Button>
-        </div>
-      </ErrorAlert>
+      <>
+        {pageHeadData}
+        <ErrorAlert>
+          <div className="flex flex-col items-center justify-center">
+            <p className="mt-3 mb-4 font-bold text-center">
+              No event found for the chosen filter!
+            </p>
+            <Button link="/events">Show All Events!</Button>
+          </div>
+        </ErrorAlert>
+      </>
     );
   }
 
@@ -100,6 +135,7 @@ export default function FilterdEventPage(props) {
 
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filterdEvents} />
     </>

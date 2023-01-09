@@ -1,4 +1,5 @@
 import { getEventById, getFeaturedEvents } from '../../helpers/api-util';
+import Head from 'next/head';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
@@ -20,6 +21,13 @@ export default function EventDetailPage(props) {
   }
   return (
     <>
+      {/* 동적인 head컨텐츠 추가하기 */}
+      <Head>
+        <title>{event.title}- Next.Js 연습</title>
+        <meta name="description" content={event.description} />
+        {/* meta태그는 해당문서의 대한 정보인 메타 데이터를 정의할 떄 사용  검색엔진에서 결과 출력할 때 같이 출력되는 설명문 */}
+      </Head>
+
       <EventSummary title={event.title} />
       <EventLogistics
         data={event.date}
