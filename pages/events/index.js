@@ -18,12 +18,16 @@ export default function AllEventPage(props) {
   return (
     <>
       <Head>
+        <title>_appJs Head</title>
+      </Head>
+      <Head>
         <title>All Event - Next.Js 연습</title>
         <meta
           name="description"
           content="Find a lot of great events that allow you to evolve..."
         />
       </Head>
+      {/* 여러 Head가 있어도 next가 자동 병합시킴 -> 같은 요소가 여럿있다면 최근 요소만 반영 */}
       <EventSearch onSearch={findEventHandler} />
       <EventList items={events} />
     </>
